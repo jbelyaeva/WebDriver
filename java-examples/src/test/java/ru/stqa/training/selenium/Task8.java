@@ -14,7 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Task7 {
+public class Task8 {
 
   private WebDriver driver;
   private WebDriverWait wait;
@@ -26,18 +26,15 @@ public class Task7 {
   }
 
   @Test
-  public void testTask7() {
-    driver.get("http://localhost/litecart/admin/login.php");
-    driver.findElement(By.name("username")).sendKeys("admin");
-    driver.findElement(By.name("password")).sendKeys("admin");
-    driver.findElement(By.name("login")).click();
+  public void testTask8() {
+    driver.get("http://localhost/litecart/en/");
 
-    List<WebElement> mainMenu = driver.findElements(By.xpath("//ul[@id='box-apps-menu']//li"));
+    List<WebElement> cards = driver.findElements(By.xpath("//li//a[@class='link']"));
 
     new WebDriverWait(driver, 10)
-        .until(ExpectedConditions.visibilityOfAllElements(mainMenu));
+        .until(ExpectedConditions.visibilityOfAllElements(cards));
 
-    for (int i = 1; i <= mainMenu.size(); i++) {
+   /* for (int i = 1; i <= mainMenu.size(); i++) {
       driver.findElement(By.xpath("(//ul[@id='box-apps-menu']//li[@id='app-'])[" + i + "]"))
           .click();
       wait.until(presenceOfElementLocated(By.xpath("//h1")));
@@ -55,7 +52,7 @@ public class Task7 {
           wait.until(presenceOfElementLocated(By.xpath("//h1")));
         }
       }
-    }
+    }*/
   }
 
   public boolean isElementPresent(By locator) {
