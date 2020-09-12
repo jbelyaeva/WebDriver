@@ -14,7 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Task8 {
+public class Task8_Locators {
 
   private WebDriver driver;
   private WebDriverWait wait;
@@ -29,15 +29,12 @@ public class Task8 {
   public void testTask8() {
     driver.get("http://localhost/litecart/en/");
 
-    List<WebElement> cards = driver.findElements(By.xpath("//li//a[@class='link']"));
+    List<WebElement> cards = driver.findElements(By.xpath("//li[contains(@class,'product')]"));
 
     new WebDriverWait(driver, 10)
         .until(ExpectedConditions.visibilityOfAllElements(cards));
-    List<WebElement> newSticker = driver.findElements(By.xpath("//div[@class='sticker new']"));
-    List<WebElement> saleSticker = driver.findElements(By.xpath("//div[@class='sticker sale']"));
-    //стикеров столько же сколько товара
-    assertThat(cards.size(), equalTo(newSticker.size() + saleSticker.size()));
-    //каждый товар имеет один стикер (одной этой проверки достаточно для Задания 8)
+
+    //проверка на то, что каждый товар имеет стикер и он единственный
     for (int i = 1; i < cards.size(); i++) {
       List<WebElement> stickers = driver.findElements(
           By.xpath("(//li//a[@class='link'])[" + i + "]//div[contains(@class,'sticker')]"));
