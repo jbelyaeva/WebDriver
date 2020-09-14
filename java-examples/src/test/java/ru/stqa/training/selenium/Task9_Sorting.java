@@ -54,11 +54,6 @@ public class Task9_Sorting {
     public void testTask9_2() {
         List<WebElement> zones = driver.findElements(By.xpath("//tr[@class='row']//td[6]"));
         List<String> listOld = new ArrayList<>();
-        /*1. Идем по списку зон вниз и находим не нулевую зону
-        * 2. Кликаем на страну, соответствующую это зоне
-        * 3. Переходим на страницу страны и берем список зон из ui (исключая пустую строку внизу)
-        * 4. Затем применяем алгоритм сортировки из теста Test9_1
-        * 5. Если зоны отсортированы по алфавиту - возвращаемся на страницу стран и идем по списку ниже до конца.*/
         for (int i = 0; i <= zones.size() - 1; i++) {
             if (!driver.findElement(By.xpath("(//tr[@class='row']//td[6])[" + (i + 1) + "]"))
                 .getText().equals("0")) {

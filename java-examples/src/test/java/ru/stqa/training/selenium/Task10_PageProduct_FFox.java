@@ -9,9 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -76,12 +76,14 @@ public class Task10_PageProduct_FFox {
             String[] getSale = atr.split("\n");
             String Sale = getSale[4].trim();
             if (Sale.equals("Sale")){
+                assertThat(isElementPresent(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s")), equalTo(
+                    true));//найден элемент с тегом s - значит линия зачеркнута
                 checkOnGray(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s"));
-           //     checkOnLine(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s"));
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
                     .click();
+                assertThat(isElementPresent(By.xpath("//div[@class='price-wrapper']//s")), equalTo(
+                    true));
                 checkOnGray(By.xpath("//div[@class='price-wrapper']//s"));
-             //   checkOnLine(By.xpath("//div[@class='price-wrapper']//s"));
                 return;
             }
         }
@@ -99,12 +101,14 @@ public class Task10_PageProduct_FFox {
             String[] getSale = atr.split("\n");
             String Sale = getSale[4].trim();
             if (Sale.equals("Sale")){
+                assertThat(isElementPresent(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong")), equalTo(
+                    true));//найден элемент с тегом strong - значит линия жирная
                 checkOnRed(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong"));
-             //   checkOnLineBold(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong"));
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
                     .click();
+                assertThat(isElementPresent(By.xpath("//div[@class='price-wrapper']//strong")), equalTo(
+                    true));
                 checkOnRed(By.xpath("//div[@class='price-wrapper']//strong"));
-               // checkOnLineBold(By.xpath("//div[@class='price-wrapper']//strong"));
                 return;
             }
         }
@@ -154,18 +158,6 @@ public class Task10_PageProduct_FFox {
         assertThat((g == 0 && b == 0), equalTo(true));
     }
 
-    private void checkOnLine(By locator) {
-        String styleElement = driver.findElement(locator).getCssValue("font");
-        String[] getStyle = styleElement.split("[0-9,()]");
-        String style = getStyle[0].substring(0, 12);
-        assertThat(style, equalTo("line-through"));
-    }
-
-    private void checkOnLineBold(By locator) {
-        String styleElement = driver.findElement(locator).getCssValue("font-weight");
-        assertThat(styleElement, equalTo("700"));
-    }
-
     private void checkFont(By locatorOld, By locatorNew) {
         String styleOld = driver.findElement(locatorOld).getCssValue("font-size");
         String[] styleOldPrice = styleOld.split("[a-z]");
@@ -174,6 +166,15 @@ public class Task10_PageProduct_FFox {
         String[] styleNewPrice = styleNew.split("[a-z]");
         double fontNew = Double.parseDouble((styleNewPrice[0]));
         assertThat((fontNew > fontOld), equalTo(true));
+    }
+
+    public boolean isElementPresent(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
     }
 
     @After
