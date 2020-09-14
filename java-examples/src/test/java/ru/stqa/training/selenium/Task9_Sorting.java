@@ -50,7 +50,7 @@ public class Task9_Sorting {
         }
     }
 
-    @Test //сортировка зон
+    @Test //сортировка зон на странице страны
     public void testTask9_2() {
         List<WebElement> zones = driver.findElements(By.xpath("//tr[@class='row']//td[6]"));
         List<String> listOld = new ArrayList<>();
@@ -82,6 +82,32 @@ public class Task9_Sorting {
         }
 
     }
+
+    @Test //сортировка зон
+    public void testTask9_3() {
+        driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        List<WebElement> countries = driver.findElements(By.xpath("//tr[@class='row']//td[3]")); //zones
+        List<String> listOld = new ArrayList<>();
+
+        for (int i = 0; i <= countries.size() - 1; i++) {
+            driver.findElement(By.xpath("(//tr[@class='row']//td[3]//a)[" + (i + 1) + "]"))
+                .click();
+
+            List<WebElement> countryZone = driver
+                .findElements(By.xpath("//select[contains(@name,'zone_code')]//option[@selected='selected']"));
+            for (int j = 0; j <= countryZone.size() - 1; j++) {
+                String text = countryZone.get(j).getText();
+                    listOld.add(j, text);
+            }
+            List<String> listNew = listOld;
+            listNew.sort(String.CASE_INSENSITIVE_ORDER);
+
+            for (int n = 0; n <= listOld.size() - 1; n++) {
+                assertThat(listOld.get(n), equalTo(listNew.get(n)));
+            }
+            driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        }
+        }
 
     @After
     public void stop() {
