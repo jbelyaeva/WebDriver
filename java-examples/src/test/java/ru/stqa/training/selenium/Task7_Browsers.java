@@ -27,7 +27,7 @@ public class Task7_Browsers {
 
   @Test
   public void testTask7() {
-    driver.get("http://localhost/litecart/admin/login.php");
+    driver.get("http://localhost/litecard/admin/login.php");
     driver.findElement(By.name("username")).sendKeys("admin");
     driver.findElement(By.name("password")).sendKeys("admin");
     driver.findElement(By.name("login")).click();

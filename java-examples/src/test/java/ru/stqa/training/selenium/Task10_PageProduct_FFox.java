@@ -24,7 +24,7 @@ public class Task10_PageProduct_FFox {
     public void start() {
         driver = new FirefoxDriver();
         wait = new WebDriverWait(driver, 10);
-        driver.get("http://localhost/litecart/en/");
+        driver.get("http://localhost/litecard/en/");
     }
 
     @Test //совпадает название

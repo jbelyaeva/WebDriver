@@ -24,7 +24,7 @@ public class Task9_Sorting {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 10);
 
-        driver.get(" http://localhost/litecart/admin/?app=countries&doc=countries");
+        driver.get(" http://localhost/litecard/admin/?app=countries&doc=countries");
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
         driver.findElement(By.name("login")).click();
@@ -77,7 +77,7 @@ public class Task9_Sorting {
                 for (int n = 0; n <= listOld.size() - 1; n++) {
                     assertThat(listOld.get(n), equalTo(listNew.get(n)));
                 }
-                driver.get(" http://localhost/litecart/admin/?app=countries&doc=countries");
+                driver.get(" http://localhost/litecard/admin/?app=countries&doc=countries");
             }
         }
 
@@ -85,7 +85,7 @@ public class Task9_Sorting {
 
     @Test //сортировка зон
     public void testTask9_3() {
-        driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        driver.get("http://localhost/litecard/admin/?app=geo_zones&doc=geo_zones");
         List<WebElement> countries = driver.findElements(By.xpath("//tr[@class='row']//td[3]")); //zones
         List<String> listOld = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class Task9_Sorting {
             for (int n = 0; n <= listOld.size() - 1; n++) {
                 assertThat(listOld.get(n), equalTo(listNew.get(n)));
             }
-            driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+            driver.get("http://localhost/litecard/admin/?app=geo_zones&doc=geo_zones");
         }
         }
 

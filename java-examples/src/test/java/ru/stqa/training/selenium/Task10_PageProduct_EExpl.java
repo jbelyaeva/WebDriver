@@ -24,7 +24,7 @@ public class Task10_PageProduct_EExpl {
     public void start() {
         driver = new InternetExplorerDriver();
         wait = new WebDriverWait(driver, 10);
-        driver.get("http://localhost/litecart/en/");
+        driver.get("http://localhost/litecard/en/");
     }
 
     @Test //совпадает название

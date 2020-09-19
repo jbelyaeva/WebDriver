@@ -35,7 +35,7 @@ public class Task12 {
         String target = System.getProperty("target", "local");
         properties.load(
             new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
-        driver.get("http://localhost/litecart/admin/");
+        driver.get("http://localhost/litecard/admin/");
 
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
@@ -62,9 +62,9 @@ public class Task12 {
         Thread.sleep(100);
         click(By.xpath("(//div[@class='input-wrapper'])[2]//input[1]"));
         type(By.name("quantity"), "2,25");
-        String filePath1 =
+        String filePath =
             properties.getProperty("user.dir") + "/src/test/resources/images/cat.jpg";
-        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(filePath1);
+        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(filePath);
         type(By.xpath("(//input[@type='date'])[1]"), "12122020");
         type(By.xpath("(//input[@type='date'])[2]"), "12122021");
 

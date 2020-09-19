@@ -27,7 +27,7 @@ public class Task8_Locators {
 
   @Test
   public void testTask8() {
-    driver.get("http://localhost/litecart/en/");
+    driver.get("http://localhost/litecard/en/");
 
     List<WebElement> cards = driver.findElements(By.xpath("//li[contains(@class,'product')]"));
 

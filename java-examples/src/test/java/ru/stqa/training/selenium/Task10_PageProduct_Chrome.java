@@ -24,7 +24,7 @@ public class Task10_PageProduct_Chrome {
     public void start() {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 10);
-        driver.get("http://localhost/litecart/en/");
+        driver.get("http://localhost/litecard/en/");
     }
 
     @Test //совпадает название
