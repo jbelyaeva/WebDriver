@@ -29,21 +29,11 @@ public class Task14 {
     @Test
     public void testTask14() {
         click(By.xpath("(//a[contains(@href,'AF')])[1]"));
-
-        goToNewWindowAndGoToBack(
-            By.xpath("//a[@href='http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2']"));
-        goToNewWindowAndGoToBack(
-            By.xpath("//a[@href='http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3']"));
-        goToNewWindowAndGoToBack(
-            By.xpath("//a[@href='https://en.wikipedia.org/wiki/Regular_expression']"));
-        goToNewWindowAndGoToBack(By.xpath(
-            "//a[@href='http://www.addressdoctor.com/en/countries-data/address-formats.html']"));
-        goToNewWindowAndGoToBack(
-            By.xpath("//a[@href='https://en.wikipedia.org/wiki/Regular_expression']"));
-        goToNewWindowAndGoToBack(By.xpath(
-            "//a[@href='https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language']"));
-        goToNewWindowAndGoToBack(
-            By.xpath("//a[@href='https://en.wikipedia.org/wiki/List_of_country_calling_codes']"));
+        int countHref = driver.findElements(By.xpath("//form//a[contains(@href,'http')]")).size();
+        for (int i = 1; i <= countHref; i++) {
+            goToNewWindowAndGoToBack(
+                By.xpath("(//form//a[contains(@href,'http')])[" + i + "]"));
+        }
     }
 
     private void goToNewWindowAndGoToBack(By locatorHref) {
@@ -66,7 +56,7 @@ public class Task14 {
     protected void click(By locator) {
         driver.findElement(locator).click();
     }
-    
+
     @After
     public void stop() {
         driver.quit();
