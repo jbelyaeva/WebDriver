@@ -1,4 +1,4 @@
-package ru.stqa.training.selenium;
+package ru.stqa.training.selenium.tests;
 
 import static java.lang.Integer.parseInt;
 import static org.hamcrest.CoreMatchers.equalTo;

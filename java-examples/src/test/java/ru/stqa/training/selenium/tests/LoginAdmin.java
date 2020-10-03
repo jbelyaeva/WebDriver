@@ -1,4 +1,4 @@
-package ru.stqa.training.selenium;
+package ru.stqa.training.selenium.tests;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleContains;
 

@@ -1,4 +1,4 @@
-package ru.stqa.training.selenium;
+package ru.stqa.training.selenium.tests;
 
 import static java.lang.Integer.parseInt;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -9,20 +9,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Task10_PageProduct_EExpl {
+public class Task10_PageProduct_FFox {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
     @Before
     public void start() {
-        driver = new InternetExplorerDriver();
+        driver = new FirefoxDriver();
         wait = new WebDriverWait(driver, 10);
         driver.get("http://localhost/litecard/en/");
     }
@@ -43,14 +43,14 @@ public class Task10_PageProduct_EExpl {
         for (int i = 1; i < cards.size(); i++) {
             String atr = driver
                 .findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
-                .getAttribute("outerText");
+                .getAttribute("textContent");
             String[] getSale = atr.split("\n");
-            String Sale = getSale[0];
-            if (Sale.equals("SALE")) {
-                String prices = getSale[3];
+            String Sale = getSale[4].trim();
+            if (Sale.equals("Sale")) {
+                String prices = getSale[8];
                 String[] price = prices.split(" ");
-                String priceOld = price[0];
-                String priceNew = price[1];
+                String priceOld = price[16];
+                String priceNew = price[17];
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
                     .click();
                 String priceOldInCard = driver.findElement(By.xpath("//s[@class='regular-price']"))
@@ -72,16 +72,18 @@ public class Task10_PageProduct_EExpl {
         for (int i = 1; i < cards.size(); i++) {
             String atr = driver
                 .findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
-                .getAttribute("outerText");
+                .getAttribute("textContent");
             String[] getSale = atr.split("\n");
-            String Sale = getSale[0];
-            if (Sale.equals("SALE")) {
+            String Sale = getSale[4].trim();
+            if (Sale.equals("Sale")){
+                assertThat(isElementPresent(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s")), equalTo(
+                    true));//найден элемент с тегом s - значит линия зачеркнута
                 checkOnGray(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s"));
-                checkOnLine(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s"));
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
                     .click();
+                assertThat(isElementPresent(By.xpath("//div[@class='price-wrapper']//s")), equalTo(
+                    true));
                 checkOnGray(By.xpath("//div[@class='price-wrapper']//s"));
-                checkOnLine(By.xpath("//div[@class='price-wrapper']//s"));
                 return;
             }
         }
@@ -95,16 +97,18 @@ public class Task10_PageProduct_EExpl {
         for (int i = 1; i < cards.size(); i++) {
             String atr = driver
                 .findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
-                .getAttribute("outerText");
+                .getAttribute("textContent");
             String[] getSale = atr.split("\n");
-            String Sale = getSale[0];
-            if (Sale.equals("SALE")) {
+            String Sale = getSale[4].trim();
+            if (Sale.equals("Sale")){
+                assertThat(isElementPresent(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong")), equalTo(
+                    true));//найден элемент с тегом strong - значит линия жирная
                 checkOnRed(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong"));
-                checkOnLineBold(By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong"));
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
                     .click();
+                assertThat(isElementPresent(By.xpath("//div[@class='price-wrapper']//strong")), equalTo(
+                    true));
                 checkOnRed(By.xpath("//div[@class='price-wrapper']//strong"));
-                checkOnLineBold(By.xpath("//div[@class='price-wrapper']//strong"));
                 return;
             }
         }
@@ -117,10 +121,10 @@ public class Task10_PageProduct_EExpl {
         for (int i = 1; i < cards.size(); i++) {
             String atr = driver
                 .findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
-                .getAttribute("outerText");
+                .getAttribute("textContent");
             String[] getSale = atr.split("\n");
-            String Sale = getSale[0];
-            if (Sale.equals("SALE")) {
+            String Sale = getSale[4].trim();
+            if (Sale.equals("Sale")) {
                 checkFont(By.xpath("(//li[contains(@class,'product')])[" + i + "]//s"),
                     By.xpath("(//li[contains(@class,'product')])[" + i + "]//strong"));
                 driver.findElement(By.xpath("(//li[contains(@class,'product')])[" + i + "]"))
@@ -136,8 +140,8 @@ public class Task10_PageProduct_EExpl {
     private void checkOnGray(By locator) {
         String color = driver.findElement(locator).getCssValue("color");
         String[] elementsColor = color.split("[a-z]");
-        String rgbOld = elementsColor[4];//(119,119,119,1)
-        String[] rgbNew = rgbOld.split("[(,]");
+        String rgbOld = elementsColor[3];//(119,119,119,1)
+        String[] rgbNew = rgbOld.split("[(,)]");
         int r = parseInt(rgbNew[1].trim());
         int g = parseInt(rgbNew[2].trim());
         int b = parseInt(rgbNew[3].trim());
@@ -147,24 +151,11 @@ public class Task10_PageProduct_EExpl {
     private void checkOnRed(By locator) {
         String color = driver.findElement(locator).getCssValue("color");
         String[] elementsColor = color.split("[a-z]");
-        String rgbOld = elementsColor[4];//(119,119,119,1)
-        String[] rgbNew = rgbOld.split("[(,]");
-        int r = parseInt(rgbNew[1].trim());
+        String rgbOld = elementsColor[3];//(119,119,119,1)
+        String[] rgbNew = rgbOld.split("[(,)]");
         int g = parseInt(rgbNew[2].trim());
         int b = parseInt(rgbNew[3].trim());
         assertThat((g == 0 && b == 0), equalTo(true));
-    }
-
-    private void checkOnLine(By locator) {
-        String styleElement = driver.findElement(locator).getCssValue("text-decoration");
-        String[] getStyle = styleElement.split("[0-9,()]");
-        String style = getStyle[0].substring(0, 12);
-        assertThat(style, equalTo("line-through"));
-    }
-
-    private void checkOnLineBold(By locator) {
-        String styleElement = driver.findElement(locator).getCssValue("font-weight");
-        assertThat(styleElement, equalTo("700"));
     }
 
     private void checkFont(By locatorOld, By locatorNew) {
@@ -175,6 +166,15 @@ public class Task10_PageProduct_EExpl {
         String[] styleNewPrice = styleNew.split("[a-z]");
         double fontNew = Double.parseDouble((styleNewPrice[0]));
         assertThat((fontNew > fontOld), equalTo(true));
+    }
+
+    public boolean isElementPresent(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
     }
 
     @After
